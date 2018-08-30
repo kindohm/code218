@@ -1,5 +1,7 @@
 bps (140/120)
 
+-- used a MIDI controller for a lot of manual modulation on this.
+
 do
     let spat = "[1.1 ~ ~ ~ ~ ~ 0.4 ~ ~ ~]"
     let fpat = "[0   ~ ~ ~ ~ ~ 127 ~ ~ ~]"
