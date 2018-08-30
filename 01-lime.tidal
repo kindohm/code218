@@ -1,0 +1,11 @@
+bps (140/120)
+
+do
+    let spat = "[1.1 ~ ~ ~ ~ ~ 0.4 ~ ~ ~]"
+    let fpat = "[0   ~ ~ ~ ~ ~ 127 ~ ~ ~]"
+    let dpat = "[0   ~ ~ ~ ~ ~ 3   ~ ~ ~]"
+    let mod p = spaceOut [1,1.1,0.9,0.95,1.7,1.25,0.8,1.65,1,0.7,0.823,1.5,1,2,1.8] $ p
+    d1 $ mod $ gain spat # note "-12" # s "midi" # midichan 15
+    d2 $ mod $ control fpat # ctlNum 100 # s "midi" # midichan 15 # midicmd "control"
+    d3 $ mod $ midinote dpat # s "midi" # gain 1.2
+

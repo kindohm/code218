@@ -1,0 +1,61 @@
+cps 1
+
+do
+    let howoften = 15
+    let mute1 p = id $ p
+    let mute2 p = id $ p
+    let densities = [0.5,0.6 .. 3 ]
+    let den p = density (discretise (1/4) $ shift' 3829 $ choose densities) $ shift $ p
+    let ctlGain = gain (randcat ( 
+                        (replicate 1 "1") 
+                    ++ (replicate 2 "1*2") 
+                    ++ (replicate 3 "1*3") 
+                    ++ (replicate 4 "1*4") 
+                    ++ (replicate 5 "1*5") 
+                    ++ (replicate 6 "1*6") 
+                    ++ (replicate 7 "1*7") 
+                    ++ (replicate howoften "1") 
+                        ))
+    d1 $ den $ s (randcat ( 
+            (replicate 1 "midi") 
+            ++ (replicate 2 "midi*2") 
+            ++ (replicate 3 "midi*3") 
+            ++ (replicate 4 "midi*4") 
+            ++ (replicate 5 "midi*5") 
+            ++ (replicate 6 "midi*6") 
+            ++ (replicate 7 "midi*7") 
+            ++ (replicate howoften "~") 
+        )) # midinote (shift' 400 $ choose [0,0,3]) # gain 1.15
+    d6 $ mute1 $ (|*| gain 1.1) $ den $ gain (randcat ( 
+            (replicate 1 "0.4") 
+            ++ (replicate 2 "0.4") 
+            ++ (replicate 3 "0.4") 
+            ++ (replicate 4 "0.4") 
+            ++ (replicate 5 "0.4") 
+            ++ (replicate 6 "0.4") 
+            ++ (replicate 7 "0.4") 
+            ++ (replicate howoften "1") 
+        )) # s "midi" # midichan 15
+    d7 $ mute2 $ (|*| gain 1.1) $ den $ gain (randcat ( 
+            (replicate 1 "1") 
+            ++ (replicate 2 "1") 
+            ++ (replicate 3 "1") 
+            ++ (replicate 4 "1") 
+            ++ (replicate 5 "1") 
+            ++ (replicate 6 "1") 
+            ++ (replicate 7 "1") 
+            ++ (replicate howoften "0.4") 
+        )) # s "midi" # midichan 15
+    d8 $ den $ stack [ 
+                 ctlGain # ctlNum 1 # control (scale 0 127 $ shift' 300 rand) 
+                , ctlGain # ctlNum 2 # control (scale 0 127 $ shift' 301 rand) 
+                , ctlGain # ctlNum 3 # control (scale 0 127 $ shift' 302 rand) 
+                , ctlGain # ctlNum 4 # control (scale 0 127 $ shift' 303 rand) 
+                , ctlGain # ctlNum 5 # control (shift' 304 $ choose [0,127]) 
+                , ctlGain # ctlNum 6 # control (scale 0 127 $ shift' 305 rand) 
+                , ctlGain # ctlNum 7 # control (scale 0 127 $ shift' 306 rand) 
+                , ctlGain # ctlNum 100 # control (shift' 238924 $ choose [0,127])
+                ] 
+            # s "midi" # midichan 15 # midicmd "control"
+
+

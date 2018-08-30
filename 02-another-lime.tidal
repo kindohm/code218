@@ -1,0 +1,34 @@
+bps (160/120)
+
+do
+    let dis p = discretise (1/4) $ p
+    let vary = 0.25
+    let speeds = slow (discretise 1 $ choose [1,1,1,2,2]) $ degradeBy 0.4 $ shift $ s (randcat( 
+                    (replicate 5 "midi*1") 
+                    ++ (replicate 5 "midi*2") 
+                    ++ (replicate 5 "midi*3") 
+                    ++ (replicate 5 "midi*4") 
+                    ++ (replicate 10 "midi*5") 
+                    ++ (replicate 10 "midi*6") 
+                    ++ (replicate 7 "midi*7") 
+                    ++ (replicate 8 "midi*8") 
+                    ++ (replicate 10 "midi*10") 
+                    ++ (replicate 10 "midi*12") 
+                    ++ (replicate 10 "midi*14") 
+                    ++ (replicate 10 "midi*16") 
+                    ++ (replicate 10 "midi*18") 
+                    ++ (replicate 10 "midi*20") 
+                ))
+    d1 $ sometimesBy vary (# midinote 3) $ shift $ speeds # midinote 0 # gain 1.1
+    d8 $ sometimesBy vary (# gain 1.1) $ shift $ speeds # note "-6" # midichan 15 # gain 1.1
+    d9 $ sometimesBy vary (# control 127) $ shift $ speeds # control 0 # ctlNum 100 # midichan 15 # midicmd "control"
+    d7 $ stack [ 
+        speeds # ctlNum 1 # control (dis $ scale 0 127 $ shift' 300 rand) 
+      , speeds # ctlNum 2 # control (dis $ scale 0 127 $ shift' 301 rand) 
+      , speeds # ctlNum 3 # control (dis $ scale 0 127 $ shift' 302 rand) 
+      , speeds # ctlNum 4 # control (dis $ scale 0 127 $ shift' 303 rand) 
+      , speeds # ctlNum 5 # control (dis $ shift' 304 $ choose [0,127]) 
+      , speeds # ctlNum 6 # control (dis $ scale 0 127 $ shift' 305 rand) 
+      , speeds # ctlNum 7 # control (dis $ scale 0 127 $ shift' 306 rand) 
+      ] 
+      # midichan 15 # midicmd "control"

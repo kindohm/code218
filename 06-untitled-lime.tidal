@@ -1,0 +1,20 @@
+bps (180/120)
+
+do
+    let drumpat1 = gain "{1 0.9 0.8 1 0.85}%8" # midinote "{0 0 0 3 3}%8"
+    let dis p = discretise (1/4) $ p
+    let domove p = id $ p
+    let fill p = domove $ degradeBy 0.3 $ shift $ density (dis $ shift' 1000 $ choose [0.5,0.6..1]) $ p
+    d1 $ fill $ (|*| gain 1.15) $ drumpat1 # s "midi"
+    d6 $ fill $ (|*| gain 1.15) $ gain "{1 1 1 0.4 0.4 }%8" # note "-6" # s "midi" # midichan 15
+    d7 $ domove $ stack [ 
+        ctlNum "1*8" # control (dis $ scale 0 127 $ shift' 300 rand) 
+        , ctlNum "2*8" # control (dis $ scale 0 127 $ shift' 301 rand) 
+        , ctlNum "3*8" # control (dis $ scale 5 127 $ shift' 302 rand) 
+        , ctlNum "4*8" # control (dis $ scale 64 65 $ shift' 303 rand) 
+        , ctlNum "5*8" # control (dis $ shift' 304 $ choose [0,127]) 
+        , ctlNum "6*8" # control (dis $ scale 0 127 $ shift' 305 rand) 
+        , ctlNum "7*8" # control (dis $ scale 0 127 $ shift' 306 rand) 
+        , ctlNum "8*8" # control (dis $ scale 0 127 $ shift' 307 rand) 
+          ] # s "midi" # midicmd "control" # midichan 15
+

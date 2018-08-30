@@ -1,0 +1,13 @@
+let discretise = _discretise 
+    gtfo p = (const $ sound "~") p
+    gtfo' p = (const $ midinote "~") p
+    shift p = (1 <~)  p
+    shift' x p = (x <~) p
+    choose xs = (xs !!) <$> (irand $ fromIntegral $ length xs)
+    move p = foldEvery [3,4] (0.25 <~) $ p
+    move'' p = foldEvery [2,3] (0.25 <~) $ p
+    move' p = foldEvery [3,4] (0.25 ~>) $ p
+    move''' p = foldEvery [2,3] (0.25 ~>) $ p
+    discretize = discretise
+    g = gtfo
+    del = gtfo

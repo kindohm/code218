@@ -1,0 +1,22 @@
+bps (150/120)
+
+do
+    let dis p = discretise (1/4) $ p
+    let x p = whenmod 48 40 (slow 1.5) $ whenmod 24 16 (density 1.25) $ whenmod 35 27 (slow 1.25) $ whenmod 16 12 (move) $ p
+    d1 $ x $ stack [
+        sometimesBy 0.3 (stut' (shift' 2033 $ choose [1,2,1,2,3,4]) (0.0625*3) (id)) $ shift' 300 $ midinote "0"
+        , sometimesBy 0.3 (stut' 1 (shift' 3003 $ choose [0.125,0.0625, 0.25]) id) $ shift' 400 $ (0.5 ~>) $ midinote 3 ] 
+        # s "midi" # gain 1.1
+    d2 $ x $ off 0.125 (# gain 1.1) $ gain "0.4 0.4" # note "[0]" # s "midi" # midichan 15
+    d3 $ x $ stack [ 
+                ctlNum 1 # control (dis $ scale 0 127 $ shift' 300 rand) 
+            , ctlNum 2 # control (dis $ scale 0 127 $ shift' 301 rand) 
+            , ctlNum 3 # control (dis $ scale 0 127 $ shift' 302 rand) 
+            , g $ ctlNum 4 # control (dis $ scale 0 127 $ shift' 303 rand) 
+            , ctlNum 5 # control (dis $ shift' 304 $ choose [0,127]) 
+            , ctlNum 6 # control (dis $ scale 0 127 $ shift' 305 rand) 
+            , ctlNum 7 # control (dis $ scale 0 127 $ shift' 306 rand) 
+            ] 
+        # s "midi" # midichan 15 # midicmd "control"
+    d4 $ x $ rarely (# control 127) $ (0.125 ~>) $ control "0 0" # ctlNum 100 # s "midi" # midichan 15 # midicmd "control"
+
